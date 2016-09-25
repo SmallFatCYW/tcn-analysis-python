@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 t.cn JSON and XML Analysis - v0.2
 By iPixelOldC & http://hoc117.top
