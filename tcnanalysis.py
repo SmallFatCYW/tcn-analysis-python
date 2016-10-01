@@ -11,19 +11,17 @@ import urllib.request
 import re
 import os
 
-reRule = re.compile(r'(http://+)(.*)')
-xj = ['x', 'j']
-
 def JSONReturn(site):
     """
     json analysis: JSONReturn(site='Website URL(format:http[s]://xxx)')
-    return: {'url_short': 'http://t.cn/xxx', 'url_long': site, 'type': 0, "result": True}
+    return: {'url_short': 'http://t.cn/xxx', 'url_long': site, 'type': 0}
     type: 链接的类型，0：普通网页(site page)、1：视频(video)、2：音乐(music)、3：活动(activity)、5、投票(vote)
     """
     response = urllib.request.urlopen('http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=%s' % (site))
     html = response.read().decode('utf8')
     loads = json.loads(str(html))
     return loads[0]
+
 def XMLReturn(site):
     """
     xml analysis: XMLReturn(site='Website URL(format:http[s]://xxx)')
@@ -42,8 +40,8 @@ if __name__ == "__main__":
     else:
         inputurl = 'http://'+inputurl
     while True:
-        inputJorX = input('>>xml(x) or json(j): ').lower()
-        if inputJorX not in xj:
+        inputJorX = input('>>(x)ml or (j)son: ').lower()
+        if inputJorX not in ('x', 'j'):
             print("> Please enter 'x' or 'j'!")
         else:
             break
@@ -59,6 +57,6 @@ if __name__ == "__main__":
                 print("> Please enter 'y' or 'n'!")
             else:
                 print("> Saving...")
-                open('%s.json' % (reRule.search(inputurl).group(2)), 'w+').write(str(JSONReturn(inputurl)))
+                open('%s.json' % (re.search(r'(http://+)(.*)', inputurl).group(2)), 'w+').write(str(JSONReturn(inputurl)))
                 print("> OK")
                 break
