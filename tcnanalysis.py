@@ -17,7 +17,7 @@ def JSONReturn(site):
     return: {'url_short': 'http://t.cn/xxx', 'url_long': site, 'type': 0}
     type: 链接的类型，0：普通网页(site page)、1：视频(video)、2：音乐(music)、3：活动(activity)、5、投票(vote)
     """
-    response = urllib.request.urlopen('http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=%s' % (site))
+    response = urllib.request.urlopen('http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long={0!s}'.format((site)))
     html = response.read().decode('utf8')
     loads = json.loads(str(html))
     return loads[0]
@@ -27,7 +27,7 @@ def XMLReturn(site):
     xml analysis: XMLReturn(site='Website URL(format:http[s]://xxx)')
     return: {'url_short': 'http://t.cn/xxx', 'url_long': site}
     """
-    response = urllib.request.urlopen('http://api.t.sina.com.cn/short_url/shorten.xml?source=3271760578&url_long=%s' % (site))
+    response = urllib.request.urlopen('http://api.t.sina.com.cn/short_url/shorten.xml?source=3271760578&url_long={0!s}'.format((site)))
     html = response.read().decode('utf8')
     loads = et.fromstring(str(html))[0]
     return {"url_short": loads[0].text, "url_long": loads[1].text, "type": loads[2].text}
@@ -47,16 +47,16 @@ if __name__ == "__main__":
             break
     if 'x' == inputJorX:
         r_xml = XMLReturn(inputurl)
-        print(">>%s: \n> Short URL: %s" % (r_xml["url_long"], r_xml["url_short"]))
+        print(">>{0!s}: \n> Short URL: {1!s}".format(r_xml["url_long"], r_xml["url_short"]))
     if 'j' == inputJorX:
         r_json = JSONReturn(inputurl)
-        print(">>%s: \n> Short URL: %s" % (r_json["url_long"], r_json["url_short"]))
+        print(">>{0!s}: \n> Short URL: {1!s}".format(r_json["url_long"], r_json["url_short"]))
         while True:
             save_yn = input('>>Do you want to save it?[Y/n]').lower()
             if save_yn != 'y':
                 print("> Please enter 'y' or 'n'!")
             else:
                 print("> Saving...")
-                open('%s.json' % (re.search(r'(http://+)(.*)', inputurl).group(2)), 'w+').write(str(JSONReturn(inputurl)))
+                open('{0!s}.json'.format((re.search(r'(http://+)(.*)', inputurl).group(2))), 'w+').write(str(JSONReturn(inputurl)))
                 print("> OK")
                 break
