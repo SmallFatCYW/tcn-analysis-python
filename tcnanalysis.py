@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 """
-t.cn JSON and XML Analysis - v0.2
+
+ ____       _____             _                _           _     
+|  _ \ _   |_   _|__ _ __    / \   _ __   __ _| |_   _ ___(_)___ 
+| |_) | | | || |/ __| '_ \  / _ \ | '_ \ / _` | | | | / __| / __|
+|  __/| |_| || | (__| | | |/ ___ \| | | | (_| | | |_| \__ \ \__ \
+|_|    \__, ||_|\___|_| |_/_/   \_\_| |_|\__,_|_|\__, |___/_|___/
+       |___/                                     |___/           
+
+t.cn JSON and XML Analysis - v0.2Fix
 By iPixelOldC & http://hoc117.top
 License: MIT
 """
@@ -33,7 +41,7 @@ def XMLReturn(site):
     return {"url_short": loads[0].text, "url_long": loads[1].text, "type": loads[2].text}
 
 if __name__ == "__main__":
-    print('T.cn-Analysis by iPixelOldC (Blog: http://hoc117.top )')
+    print(__doc__)
     inputurl = input('>>Please enter url: ')
     if 'http://' in inputurl:
         pass
@@ -51,12 +59,14 @@ if __name__ == "__main__":
     if 'j' == inputJorX:
         r_json = JSONReturn(inputurl)
         print(">>{0!s}: \n> Short URL: {1!s}".format(r_json["url_long"], r_json["url_short"]))
-        while True:
-            save_yn = input('>>Do you want to save it?[Y/n]').lower()
-            if save_yn != 'y':
-                print("> Please enter 'y' or 'n'!")
-            else:
-                print("> Saving...")
-                open('{0!s}.json'.format((re.search(r'(http://+)(.*)', inputurl).group(2))), 'w+').write(str(JSONReturn(inputurl)))
-                print("> OK")
-                break
+    while True:
+        save_yn = input('>>Do you want to save it?[Y/n]').lower()
+        if save_yn == 'n':
+            break
+        elif save_yn == 'y':
+            print("> Saving...")
+            open('{0!s}.json'.format((re.search(r'(http://+)(.*)', inputurl).group(2))), 'w+').write(str(JSONReturn(inputurl)))
+            print("> OK")
+            break
+        else:
+            print('Please enter (y) or ()')
